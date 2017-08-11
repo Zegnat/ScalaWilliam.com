@@ -1,6 +1,27 @@
 <?php
 
+define('PRISM_GRAMMARS', '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-%s.min.js');
+
+$stylesheets = [
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.min.css',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/command-line/prism-command-line.min.css',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/toolbar/prism-toolbar.min.css',
+];
+$scripts = [
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/command-line/prism-command-line.min.js',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/toolbar/prism-toolbar.min.js',
+    '//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.13/clipboard.min.js',
+    '//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js',
+];
+$dependents = [
+    'scala' => ['java' => true],
+];
+
 function process_file($filename) {
+    global $stylesheets, $scripts, $dependents;
+    $usedLanguages = [];
     libxml_use_internal_errors(true);
     $dom = new \DOMDocument();
     $dom->loadHTMLFile($filename);
@@ -35,10 +56,41 @@ function process_file($filename) {
                 $language = $extension;
             }
         }
+        if (array_key_exists($language, $dependents)) {
+            $usedLanguages = array_merge($usedLanguages, $dependents[$language]);
+        }
+        $usedLanguages[$language] = true;
         $code = $dom->createElement('code');
         $code->setAttribute('class', 'language-' . $language);
         $code->appendChild($dom->createTextNode(rtrim(file_get_contents($codefile),"\n\r")));
         $element->appendChild($code);
+    }
+    if (count($usedLanguages) > 0) {
+        // We have inserted code, so lets load all the libraries.
+        $head = $dom->getElementsByTagName('head')->item(0);
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $style = $head->getElementsByTagName('style');
+        if ($style->length > 0) {
+            $style = $style->item(0);
+        } else {
+            $style = null;
+        }
+        foreach ($stylesheets as $stylesheet) {
+            $link = $dom->createElement('link');
+            $link->setAttribute('rel', 'stylesheet');
+            $link->setAttribute('href', $stylesheet);
+            $head->insertBefore($link, $style);
+        }
+        foreach ($scripts as $src) {
+            $script = $dom->createElement('script');
+            $script->setAttribute('src', $src);
+            $body->appendChild($script);
+        }
+        foreach (array_keys($usedLanguages) as $language) {
+            $script = $dom->createElement('script');
+            $script->setAttribute('src', sprintf(PRISM_GRAMMARS, $language));
+            $body->appendChild($script);
+        }
     }
     echo $dom->saveHTML();
 }

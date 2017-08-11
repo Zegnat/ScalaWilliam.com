@@ -72,7 +72,7 @@ cp 1705/greenfield-technical-debt/index.html out/1705/greenfield-technical-debt/
 cp 1705/greenfield-technical-debt/dont-be-like-this.jpeg out/1705/greenfield-technical-debt/
 
 mkdir -p out/unit-testing-is-simple
-php embed-code.php unit-testing-is-simple/index.html > out/unit-testing-is-simple/index.html
+php embed-code.php unit-testing-is-simple/index.html | php add-meta.php > out/unit-testing-is-simple/index.html
 
 mkdir -p out/1704/2017-freelance-development-platforms
 cp 1704/2017-freelance-development-platforms/index.html out/1704/2017-freelance-development-platforms/index.html
