@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,900%7CRoboto+Mono" rel="stylesheet">
     <style type="text/css">
-    body {
-        font-family: 'Roboto', sans-serif;
-        line-height:1.6;
-        color:rgb(5,5,5);
-        background:rgb(255,255,255);
-        max-width:60em;
-    }
+        /* Page styles. */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height:1.6;
+            color:rgb(5,5,5);
+            background:rgb(255,255,255);
+            max-width:60em;
+        }
         code {
             font-family: 'Roboto Mono', monospace;
         }
@@ -23,15 +23,15 @@
         ul {
             list-style-type: square;
         }
-                a {
-            color:darkslategrey;
+        a {
+            color: darkslategrey;
         }
         a:hover {
-            color:darkslateblue;
+            color: darkslateblue;
         }
-
+        /* Overwriting code highlighting styles. */
         .token.operator {
-        background:none;
+            background:none;
         }
         /* Styles for the comment section. */
         #comments {
@@ -58,302 +58,300 @@
             margin: 2em 0 0 2em;
         }
     </style>
-
-
     <title>Unit testing is simple</title>
-<link rel="canonical" href="/unit-testing-is-simple/">
-<meta property="article:published_time" content="2017-05-04">
-<meta property="article:modified_time" content="2017-05-04">
-<meta name="description" content="William Narmontas shows how simple unit testing is.">
+    <link rel="canonical" href="/unit-testing-is-simple/">
+    <meta property="article:published_time" content="2017-05-04">
+    <meta property="article:modified_time" content="2017-05-04">
+    <meta name="description" content="William Narmontas shows how simple unit testing is.">
 </head>
 <body class="h-entry">
-  <article>
-    <header>
-      <h1 class="p-name">Unit testing is simple</h1>
-      <h2>By <a href="/" class="u-author">William Narmontas</a>, <a href="/unit-testing-is-simple/" class="u-url"><time class="dt-published" datetime="2017-05-04">May 4, 2017</time></a></h2>
-      <p>This page can be <a href="https://github.com/ScalaWilliam/ScalaWilliam.com/blob/master/unit-testing-is-simple/index.html">edited on GitHub</a>.</p>
-      <p>Original article at <a href="https://dev.to/scalawilliam/unit-testing-is-simple" class="u-syndication">The Practical Dev</a>.</p>
-    </header>
-    <section class="e-content">
-        <p>Is unit testing difficult?</p>
-        <p>No, it is not. You don't even need a testing framework for it.</p>
-        <p>You don't even need to write the test in a separate file or class.</p>
-        <p>You just need to <a href="http://tldp.org/LDP/abs/html/exitcodes.html" target="_blank">exit with code 1</a>. This is enough to fail a Jenkins build and a Makefile!</p>
-        <p>Why is a unit test useful?</p>
-        <ul>
-            <li>Prevent regressions when you change the code.</li>
-            <li>Document expected input and output as code.</li>
-            <li>Replace error-prone <a href="http://codebetter.com/jeremymiller/2006/06/01/tdd-and-debugging/" target="_blank">println-driven development with test-driven development</a>.</li>
-        </ul>
-        <blockquote>
-            <p><strong>What do you test?</strong> when the logic is "complex enough" I know it could be broken 6 months down the line, due to "that one small change" - or that I'd spend time building it with print statements. <a href="https://github.com/ActionFPS/dashboard/blob/e757931de22d82edd20e4ef5ad3b2df56d433a16/test_build.py#L82" target="_blank">Example from my own code</a>.</p>
-        </blockquote>
-        <p>Here, I'll show you the most basic way to unit testing with four languages: Bash, Python, Node.js, Scala, just to prove the point.</p>
-        <p>These examples are for a very basic piece of code and are intentionally minimalistic, to demonstrate that you needn't use a test framework to get started with - though one will be very necessary when you scale your application.</p>
-        <h3>Bash</h3>
-        <p>Here's a bash script <code>inc.sh</code> with a basic assertion and some main code:</p>
-        <pre data-code-include="inc.sh"></pre>
-        <p>If we run:</p>
-        <pre data-code-include="bash-out-1.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-6, 8"><code class="language-bash"></pre>
-        <p>Exit code is 0. But if we broke the function, and put 2 instead of 1, we get:</p>
-        <pre data-code-include="bash-out-2.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="3"></pre>
-        <h3>Python</h3>
-        <p>This is easy to achieve in any language really. <a href="https://docs.python.org/2/reference/simple_stmts.html#the-assert-statement" target="_blank">Python assertions</a>:</p>
-        <p>Broken test in file <code>inc.py</code>:</p>
-        <pre data-code-include="inc.py"></pre>
-        <pre data-code-include="python-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-5,7"></pre>
-        <h3>Node.js</h3>
-        <p>Comes with <a href="https://nodejs.org/api/assert.html#assert_assert_equal_actual_expected_message" target="_blank">assertions built in</a>.</p>
-        <p>Broken test in file <code>inc.js</code>:</p>
-        <pre data-code-include="inc.js"></pre>
-        <pre data-code-include="node-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-8,10"></pre>
-        <h3><a href="http://scala-lang.org/" target="_blank">Scala</a></h3>
-        <p>Comes with assert.</p>
-        <pre data-code-include="inc.scala"></pre>
-        <pre data-code-include="scala-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2,4"></pre>
-        <h3>Why is this important?</h3>
-        <p>You can get started light with several assertions and work your way up to proper test suites.</p>
-        <h3>So what are test frameworks for?</h3>
-        <p>To make testing more organised. You get:</p>
-        <ul>
-            <li>Organisation</li>
-            <li>Detailed error messages</li>
-            <li>Detailed test reports</li>
-            <li>Neat assertions and human readable language (see <a href="http://www.scalatest.org/" target="_blank">ScalaTest</a>)</li>
-            <li>Incremental/TDD type of development</li>
-        </ul>
-        <h2>Conclusion</h2>
-        <p>Now you have no excuse for not writing at least a few tests in your code.</p>
+    <article>
+        <header>
+            <h1 class="p-name">Unit testing is simple</h1>
+            <h2>By <a href="/" class="u-author h-card">William Narmontas</a>, <a class="u-url" href="/unit-testing-is-simple"><time class="dt-published" datetime="2017-05-04">May 4, 2017</time></a></h2>
+            <p>This page can be <a href="https://github.com/ScalaWilliam/ScalaWilliam.com/blob/master/unit-testing-is-simple/index.html">edited on GitHub</a>.</p>
+            <p>Original article at <a href="https://dev.to/scalawilliam/unit-testing-is-simple" class="u-syndication">The Practical Dev</a>.</p>
+        </header>
+        <section class="e-content">
+            <p>Is unit testing difficult?</p>
+            <p>No, it is not. You don't even need a testing framework for it.</p>
+            <p>You don't even need to write the test in a separate file or class.</p>
+            <p>You just need to <a href="http://tldp.org/LDP/abs/html/exitcodes.html" target="_blank">exit with code 1</a>. This is enough to fail a Jenkins build and a Makefile!</p>
+            <p>Why is a unit test useful?</p>
+            <ul>
+                <li>Prevent regressions when you change the code.</li>
+                <li>Document expected input and output as code.</li>
+                <li>Replace error-prone <a href="http://codebetter.com/jeremymiller/2006/06/01/tdd-and-debugging/" target="_blank">println-driven development with test-driven development</a>.</li>
+            </ul>
+            <blockquote>
+                <p><strong>What do you test?</strong> when the logic is "complex enough" I know it could be broken 6 months down the line, due to "that one small change" - or that I'd spend time building it with print statements. <a href="https://github.com/ActionFPS/dashboard/blob/e757931de22d82edd20e4ef5ad3b2df56d433a16/test_build.py#L82" target="_blank">Example from my own code</a>.</p>
+            </blockquote>
+            <p>Here, I'll show you the most basic way to unit testing with four languages: Bash, Python, Node.js, Scala, just to prove the point.</p>
+            <p>These examples are for a very basic piece of code and are intentionally minimalistic, to demonstrate that you needn't use a test framework to get started with - though one will be very necessary when you scale your application.</p>
+            <h3>Bash</h3>
+            <p>Here's a bash script <code>inc.sh</code> with a basic assertion and some main code:</p>
+            <pre data-code-include="inc.sh"></pre>
+            <p>If we run:</p>
+            <pre data-code-include="bash-out-1.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-6, 8"><code class="language-bash"></pre>
+            <p>Exit code is 0. But if we broke the function, and put 2 instead of 1, we get:</p>
+            <pre data-code-include="bash-out-2.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="3"></pre>
+            <h3>Python</h3>
+            <p>This is easy to achieve in any language really. <a href="https://docs.python.org/2/reference/simple_stmts.html#the-assert-statement" target="_blank">Python assertions</a>:</p>
+            <p>Broken test in file <code>inc.py</code>:</p>
+            <pre data-code-include="inc.py"></pre>
+            <pre data-code-include="python-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-5,7"></pre>
+            <h3>Node.js</h3>
+            <p>Comes with <a href="https://nodejs.org/api/assert.html#assert_assert_equal_actual_expected_message" target="_blank">assertions built in</a>.</p>
+            <p>Broken test in file <code>inc.js</code>:</p>
+            <pre data-code-include="inc.js"></pre>
+            <pre data-code-include="node-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2-8,10"></pre>
+            <h3><a href="http://scala-lang.org/" target="_blank">Scala</a></h3>
+            <p>Comes with assert.</p>
+            <pre data-code-include="inc.scala"></pre>
+            <pre data-code-include="scala-out.txt" class="command-line language-bash" data-user="william" data-host="localhost" data-output="2,4"></pre>
+            <h3>Why is this important?</h3>
+            <p>You can get started light with several assertions and work your way up to proper test suites.</p>
+            <h3>So what are test frameworks for?</h3>
+            <p>To make testing more organised. You get:</p>
+            <ul>
+                <li>Organisation</li>
+                <li>Detailed error messages</li>
+                <li>Detailed test reports</li>
+                <li>Neat assertions and human readable language (see <a href="http://www.scalatest.org/" target="_blank">ScalaTest</a>)</li>
+                <li>Incremental/TDD type of development</li>
+            </ul>
+            <h2>Conclusion</h2>
+            <p>Now you have no excuse for not writing at least a few tests in your code.</p>
+        </section>
+    </article>
+    <section id="comments">
+        <h1>Comments</h1>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/lennartb" target="_blank">Lennart</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a8j" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>Sadly, most posts/introductions about unit tests are usually way too simple with easy pure functions that just calculate some number. You don't have this kind of logic in real-world applications.</p>
+                <p>I have to deal with way more complicated scenarios daily involving object graphs that require initialization, external dependencies, drag and drop, framework objects that you can't mock and so on. I've yet to read a tutorial (or even book) that covers these cases.</p>
+                <p>How do I deal with legacy code that is not necessarily bad, but doesn't use DI and is not as easily testable as it ideally should be? How do I test public methods that don't return a value, but change something deeper down the call stack (internally)? I'd really like to read an article about how to tackle these problems!</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a96" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>Great questions! I actually have a whole lot to say on this but that'd have to be a whole new article.</p>
+                        <p>For greenfield, functional programming is the answer. You don't need to test "changes deeper down the call stack" because there's no such thing as a change. Pass a value, get a value back.</p>
+                        <p>We've written large complex applications with two flavours of code:</p>
+                        <ul>
+                            <li>unit-tested functional code.</li>
+                            <li>functional/acceptance-tested mutable/side-effecting code, which wires up the functional code.</li>
+                        </ul>
+                        <p>Both flavours test-driven, not test-after.</p>
+                        <hr>
+                        <p>You say that this legacy code is not necessarily bad but missing testability. Assuming this, I say the following:</p>
+                        <ul>
+                            <li>Approach it by repeatedly extracting as much purity from mutable parts as you can. You'll find there's a lot of code that does not actually need to be mutable.</li>
+                            <li>Turn the left-over mutable parts into immutable parts.</li>
+                            <li>Only do this incrementally and not in a single step. Small commits, small pull requests.</li>
+                        </ul>
+                        <p>The cost of fixing is still less than rewriting from scratch. See Joel Spolsky's article about "Things you should never do".</p>
+                    </main>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/fortegabbm" target="_blank">ferOrtega</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jc" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>Not only simple but with functionality like Live Unit Testing (Visual Studio 2017) is also awesome.</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jo" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>This makes me think that I should list a few unit testing frameworks, to make the article more complete.</p>
+                    </main>
+                    <section>
+                        <article class="u-comment h-cite">
+                            <header>
+                                <a class="p-author h-card" href="https://dev.to/jevenson" target="_blank">Josh Evenson</a>
+                                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6kn" target="_blank">commented</a>:
+                            </header>
+                            <main class="e-content p-name">
+                                <p>XUnit! Moq! TestDouble! Karma! Jasmine!</p>
+                            </main>
+                        </article>
+                        <article class="u-comment h-cite">
+                            <header>
+                                <a class="p-author h-card" href="https://dev.to/fortegabbm" target="_blank">ferOrtega</a>
+                                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k0" target="_blank">commented</a>:
+                            </header>
+                            <main class="e-content p-name">
+                                <p>Don't worry. The article is complete enough. ;)</p>
+                            </main>
+                        </article>
+                    </section>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/alancampora" target="_blank">Alan Campora</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/71a" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>This is a good starting point! I'm not an expert on this topic, but unit testing seems easy when you test "pure" functions. What happens when you have different results for the same input? Or functions that just call functions and you have to start using spies? Would be great if you go deeper in those topics!</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/71f" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>Great question!</p>
+                        <p>Exactly! If you want to make your life as easy as possible, you'll have as high a percentage of pure functions as possible. This requires explicit effort.</p>
+                        <p>While you can achieve purity in any language, functional programming languages let you achieve it far more easily.</p>
+                        <p>Personally most side-effecting code I write is also externally facing code, which makes them Integration Tests rather than Unit tests.</p>
+                        <p>I very rarely use spies/mocks and the like. Brittle.</p>
+                    </main>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/kylessg" target="_blank">Kyle Johnson</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6km" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>I have a feeling you've got quite a lot more to say about this area than you let on in this post. It'd be quite hard for anyone to gain anything this post , on the one hand they'd have to understand how assertions fit into the bigger picture of unit testing in medium to large scale apps whilst on the other hand they don't have anything but a few simple assertion statements to work with - which they probably already knew in their day to day language</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6l5" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>Good comment, your assessment is accurate! I'm however not sure how to express it better though.</p>
+                        <p>I have another article coming on Medium related to building things incrementally though, should be out today or tomorrow.</p>
+                    </main>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/steinbjo" target="_blank">Stein B. Johansen</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a8f" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>For function, I agree, but is this unit-test or integration testing?</p>
+                <p>If you run up your application, and test how the functionality works from an external application, I would not call it "Unit-test" (or as it should have been called: Class test).</p>
+                <p>You can debate that your function/microservice is a "unit", but I do disagree, especially if it comes with a web-server which most microservices do.</p>
+            </main>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/daveoncode" target="_blank">Davide Zanotti</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6ji" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>unit testing is far more complex than writing an assertion statement... this post is pointless :/</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jm" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>What do you have in mind? I'd like to know to improve the post :)</p>
+                        <p>I do use test frameworks extensively and find people have severe resistance to testing because of the learning curve. So this is a simple alternative for the newbie.</p>
+                    </main>
+                    <section>
+                        <article class="u-comment h-cite">
+                            <header>
+                                <a class="p-author h-card" href="https://dev.to/daveoncode" target="_blank">Davide Zanotti</a>
+                                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k3" target="_blank">commented</a>:
+                            </header>
+                            <main class="e-content p-name">
+                                <p>What you define as "unit test" in your post are actually mere assertions. They are helpful to ensure the sound state of your internal code but not for documenting and ensuring that your code behaves correctly as expected (as in a unit test). So, I'm not saying that assertions in code are useless, I'm saying that it's not unit testing! moreover an unit test has usually multiple assertions because the goal is to thest a method (the unit) under different scenarios!</p>
+                            </main>
+                        </article>
+                    </section>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/theednaffattack" target="_blank">Eddie Naff</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6je" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>hunh. To me this is by far the hardest part of development. I'm not a specialist though. Different strokes for different folks I guess</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jn" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>Why is that the case for you? I'd like to find out so I can solve your problem and make testing better.</p>
+                        <p>I rarely ever have to debug or println any more - just use a test.</p>
+                    </main>
+                    <section>
+                        <article class="u-comment h-cite">
+                            <header>
+                                <a class="p-author h-card" href="https://dev.to/theednaffattack" target="_blank">Eddie Naff</a>
+                                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k2" target="_blank">commented</a>:
+                            </header>
+                            <main class="e-content p-name">
+                                <p>Well, for me it's the tooling. Getting everything to work together. The point of your article seems to be not using things like Mocha or what-have-you but I personally would be afraid to test without it. Or rather, I have no idea how I would use your method day-to-day.</p>
+                            </main>
+                        </article>
+                    </section>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/mortoray" target="_blank">edA-qa mort-ora-y</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k1" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>This post is a good reminder that you can start off simple and grow into a framework as you need it. Unit testing is ultimately about the tests themselves, and this gives you the straightest path to writing them.</p>
+            </main>
+            <section>
+                <article class="u-comment h-cite">
+                    <header>
+                        <a class="p-author h-card" href="/">William Narmontas</a>
+                        <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6l0" target="_blank">commented</a>:
+                    </header>
+                    <main class="e-content p-name">
+                        <p>That is exactly my intention. Thanks! :)</p>
+                    </main>
+                </article>
+            </section>
+        </article>
+        <article class="u-comment h-cite">
+            <header>
+                <a class="p-author h-card" href="https://dev.to/rpalo" target="_blank">Ryan Palo</a>
+                <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jj" target="_blank">commented</a>:
+            </header>
+            <main class="e-content p-name">
+                <p>That's so awesome! I didn't know about the Bash or Node ones. I've wanted to have some kind of testing for some of my Bash scripts. Thanks for sharing!</p>
+            </main>
+        </article>
     </section>
-</article>
-<section id="comments">
-    <h1>Comments</h1>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/lennartb" target="_blank">Lennart</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a8j" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>Sadly, most posts/introductions about unit tests are usually way too simple with easy pure functions that just calculate some number. You don't have this kind of logic in real-world applications.</p>
-            <p>I have to deal with way more complicated scenarios daily involving object graphs that require initialization, external dependencies, drag and drop, framework objects that you can't mock and so on. I've yet to read a tutorial (or even book) that covers these cases.</p>
-            <p>How do I deal with legacy code that is not necessarily bad, but doesn't use DI and is not as easily testable as it ideally should be? How do I test public methods that don't return a value, but change something deeper down the call stack (internally)? I'd really like to read an article about how to tackle these problems!</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a96" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>Great questions! I actually have a whole lot to say on this but that'd have to be a whole new article.</p>
-                    <p>For greenfield, functional programming is the answer. You don't need to test "changes deeper down the call stack" because there's no such thing as a change. Pass a value, get a value back.</p>
-                    <p>We've written large complex applications with two flavours of code:</p>
-                    <ul>
-                        <li>unit-tested functional code.</li>
-                        <li>functional/acceptance-tested mutable/side-effecting code, which wires up the functional code.</li>
-                    </ul>
-                    <p>Both flavours test-driven, not test-after.</p>
-                    <hr>
-                    <p>You say that this legacy code is not necessarily bad but missing testability. Assuming this, I say the following:</p>
-                    <ul>
-                        <li>Approach it by repeatedly extracting as much purity from mutable parts as you can. You'll find there's a lot of code that does not actually need to be mutable.</li>
-                        <li>Turn the left-over mutable parts into immutable parts.</li>
-                        <li>Only do this incrementally and not in a single step. Small commits, small pull requests.</li>
-                    </ul>
-                    <p>The cost of fixing is still less than rewriting from scratch. See Joel Spolsky's article about "Things you should never do".</p>
-                </main>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/fortegabbm" target="_blank">ferOrtega</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jc" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>Not only simple but with functionality like Live Unit Testing (Visual Studio 2017) is also awesome.</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jo" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>This makes me think that I should list a few unit testing frameworks, to make the article more complete.</p>
-                </main>
-                <section>
-                    <article class="u-comment h-cite">
-                        <header>
-                            <a class="p-author h-card" href="https://dev.to/jevenson" target="_blank">Josh Evenson</a>
-                            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6kn" target="_blank">commented</a>:
-                        </header>
-                        <main class="e-content p-name">
-                            <p>XUnit! Moq! TestDouble! Karma! Jasmine!</p>
-                        </main>
-                    </article>
-                    <article class="u-comment h-cite">
-                        <header>
-                            <a class="p-author h-card" href="https://dev.to/fortegabbm" target="_blank">ferOrtega</a>
-                            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k0" target="_blank">commented</a>:
-                        </header>
-                        <main class="e-content p-name">
-                            <p>Don't worry. The article is complete enough. ;)</p>
-                        </main>
-                    </article>
-                </section>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/alancampora" target="_blank">Alan Campora</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/71a" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>This is a good starting point! I'm not an expert on this topic, but unit testing seems easy when you test "pure" functions. What happens when you have different results for the same input? Or functions that just call functions and you have to start using spies? Would be great if you go deeper in those topics!</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/71f" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>Great question!</p>
-                    <p>Exactly! If you want to make your life as easy as possible, you'll have as high a percentage of pure functions as possible. This requires explicit effort.</p>
-                    <p>While you can achieve purity in any language, functional programming languages let you achieve it far more easily.</p>
-                    <p>Personally most side-effecting code I write is also externally facing code, which makes them Integration Tests rather than Unit tests.</p>
-                    <p>I very rarely use spies/mocks and the like. Brittle.</p>
-                </main>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/kylessg" target="_blank">Kyle Johnson</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6km" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>I have a feeling you've got quite a lot more to say about this area than you let on in this post. It'd be quite hard for anyone to gain anything this post , on the one hand they'd have to understand how assertions fit into the bigger picture of unit testing in medium to large scale apps whilst on the other hand they don't have anything but a few simple assertion statements to work with - which they probably already knew in their day to day language</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6l5" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>Good comment, your assessment is accurate! I'm however not sure how to express it better though.</p>
-                    <p>I have another article coming on Medium related to building things incrementally though, should be out today or tomorrow.</p>
-                </main>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/steinbjo" target="_blank">Stein B. Johansen</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/a8f" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>For function, I agree, but is this unit-test or integration testing?</p>
-            <p>If you run up your application, and test how the functionality works from an external application, I would not call it "Unit-test" (or as it should have been called: Class test).</p>
-            <p>You can debate that your function/microservice is a "unit", but I do disagree, especially if it comes with a web-server which most microservices do.</p>
-        </main>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/daveoncode" target="_blank">Davide Zanotti</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6ji" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>unit testing is far more complex than writing an assertion statement... this post is pointless :/</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jm" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>What do you have in mind? I'd like to know to improve the post :)</p>
-                    <p>I do use test frameworks extensively and find people have severe resistance to testing because of the learning curve. So this is a simple alternative for the newbie.</p>
-                </main>
-                <section>
-                    <article class="u-comment h-cite">
-                        <header>
-                            <a class="p-author h-card" href="https://dev.to/daveoncode" target="_blank">Davide Zanotti</a>
-                            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k3" target="_blank">commented</a>:
-                        </header>
-                        <main class="e-content p-name">
-                            <p>What you define as "unit test" in your post are actually mere assertions. They are helpful to ensure the sound state of your internal code but not for documenting and ensuring that your code behaves correctly as expected (as in a unit test). So, I'm not saying that assertions in code are useless, I'm saying that it's not unit testing! moreover an unit test has usually multiple assertions because the goal is to thest a method (the unit) under different scenarios!</p>
-                        </main>
-                    </article>
-                </section>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/theednaffattack" target="_blank">Eddie Naff</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6je" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>hunh. To me this is by far the hardest part of development. I'm not a specialist though. Different strokes for different folks I guess</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jn" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>Why is that the case for you? I'd like to find out so I can solve your problem and make testing better.</p>
-                    <p>I rarely ever have to debug or println any more - just use a test.</p>
-                </main>
-                <section>
-                    <article class="u-comment h-cite">
-                        <header>
-                            <a class="p-author h-card" href="https://dev.to/theednaffattack" target="_blank">Eddie Naff</a>
-                            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k2" target="_blank">commented</a>:
-                        </header>
-                        <main class="e-content p-name">
-                            <p>Well, for me it's the tooling. Getting everything to work together. The point of your article seems to be not using things like Mocha or what-have-you but I personally would be afraid to test without it. Or rather, I have no idea how I would use your method day-to-day.</p>
-                        </main>
-                    </article>
-                </section>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/mortoray" target="_blank">edA-qa mort-ora-y</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6k1" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>This post is a good reminder that you can start off simple and grow into a framework as you need it. Unit testing is ultimately about the tests themselves, and this gives you the straightest path to writing them.</p>
-        </main>
-        <section>
-            <article class="u-comment h-cite">
-                <header>
-                    <a class="p-author h-card" href="/">William Narmontas</a>
-                    <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6l0" target="_blank">commented</a>:
-                </header>
-                <main class="e-content p-name">
-                    <p>That is exactly my intention. Thanks! :)</p>
-                </main>
-            </article>
-        </section>
-    </article>
-    <article class="u-comment h-cite">
-        <header>
-            <a class="p-author h-card" href="https://dev.to/rpalo" target="_blank">Ryan Palo</a>
-            <a class="u-url" href="https://dev.to/scalawilliam/unit-testing-is-simple/comments/6jj" target="_blank">commented</a>:
-        </header>
-        <main class="e-content p-name">
-            <p>That's so awesome! I didn't know about the Bash or Node ones. I've wanted to have some kind of testing for some of my Bash scripts. Thanks for sharing!</p>
-        </main>
-    </article>
-</section>
 </body>
 </html>
